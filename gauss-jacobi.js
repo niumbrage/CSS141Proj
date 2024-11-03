@@ -1,7 +1,31 @@
-function jacobi(equation){
-    
+function jacobi(equation, guess) {
+    let results = [];
+    let n = 0;
+    let a1 = guess[0], a2 = guess[1], a3 = guess[2], oldA = guess;
+
+    while (n < 10) {
+        let x1 = (equation[0][3] - (equation[0][1] * a2) - (equation[0][2] * a3)) / equation[0][0];
+        let x2 = (equation[1][3] - (equation[1][0] * a1) - (equation[1][2] * a3)) / equation[1][1];
+        let x3 = (equation[2][3] - (equation[2][0] * a1) - (equation[2][1] * a2)) / equation[2][2];
+
+        let err1 = Math.abs((x1 - oldA[0]) / x1) * 100;
+        let err2 = Math.abs((x2 - oldA[1]) / x2) * 100;
+        let err3 = Math.abs((x3 - oldA[2]) / x3) * 100;
+
+        results.push({
+            iteration: n + 1,
+            x1: x1,
+            x2: x2,
+            x3: x3,
+            error: Math.max(err1, err2, err3)
+        });
+
+        oldA = [x1, x2, x3];
+        n++;
+    }
+    return results; // Return the results for output later
 }
 
 module.exports = {
     jacobi
-}
+};
